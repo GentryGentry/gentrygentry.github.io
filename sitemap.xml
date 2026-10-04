@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://danielssongentry.se/</loc><priority>1.0</priority></url>
+  <url><loc>https://danielssongentry.se/tjanster/</loc><priority>0.8</priority></url>
+  <url><loc>https://danielssongentry.se/priser/</loc><priority>0.8</priority></url>
+  <url><loc>https://danielssongentry.se/om-oss/</loc><priority>0.7</priority></url>
+  <url><loc>https://danielssongentry.se/kontakt/</loc><priority>0.8</priority></url>
+  <url><loc>https://danielssongentry.se/vanliga-fragor/</loc><priority>0.6</priority></url>
+  <url><loc>https://danielssongentry.se/allmanna-villkor/</loc><priority>0.3</priority></url>
+  <url><loc>https://danielssongentry.se/integritetspolicy/</loc><priority>0.3</priority></url>
+  <url><loc>https://danielssongentry.se/cookiepolicy/</loc><priority>0.3</priority></url>
+</urlset>

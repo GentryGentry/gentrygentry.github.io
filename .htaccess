@@ -1,0 +1,66 @@
+# danielssongentry.se – Hostinger (Apache)
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTPS
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://danielssongentry.se%{REQUEST_URI} [L,R=301]
+
+  # www -> apex
+  RewriteCond %{HTTP_HOST} ^www\.danielssongentry\.se$ [NC]
+  RewriteRule ^ https://danielssongentry.se%{REQUEST_URI} [L,R=301]
+
+  # Katalog-URL:er ska sluta med snedstreck (/priser -> /priser/)
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/ [L,R=301]
+</IfModule>
+
+# 404 (svarar med status 404)
+ErrorDocument 404 /404.html
+
+# Komprimering (gzip + brotli)
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+
+# Cache
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType font/woff2 .woff2
+  AddType text/javascript .js .mjs
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault "access plus 1 hour"
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 1 day"
+  ExpiresByType text/plain "access plus 1 day"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 month"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+</IfModule>
+<IfModule mod_headers.c>
+  # Hashade filer i /_astro/ ändras aldrig → cacha ett år
+  <FilesMatch "^.*\.(js|css|woff2|avif|webp|jpg|jpeg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable" "expr=%{REQUEST_URI} =~ m#^/_astro/#"
+  </FilesMatch>
+  # Konfigurationsfilen redigeras av kunden → cacha aldrig länge
+  <Files "dg-config.js">
+    Header set Cache-Control "no-cache"
+  </Files>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
